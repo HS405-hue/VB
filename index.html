@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Vision Board & Life Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar / Widget Drawer -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">✨</div>
+        <div class="brand-text">
+          <h1>VisionLife</h1>
+          <span>วางแผนชีวิตและเป้าหมาย</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-title">
+          <span>หมวดหมู่วิตเจ็ต</span>
+          <span class="badge">ลากหรือคลิกใส่บอร์ด</span>
+        </div>
+        <p class="section-hint">กดหรือลากกล่องด้านล่างนี้ลงบน Vision Board ได้ทันที</p>
+        
+        <div class="widget-palette" id="widgetPalette">
+          <!-- Finance Widget Item -->
+          <div class="palette-item" draggable="true" data-type="finance">
+            <div class="palette-icon finance-bg">💰</div>
+            <div class="palette-info">
+              <span class="item-name">การเงิน & งบประมาณ</span>
+              <span class="item-desc">เป้าหมายเงินเก็บ, ค่าใช้จ่าย, รายรับ</span>
+            </div>
+            <button class="add-btn" title="เพิ่มลงบอร์ด">+</button>
+          </div>
+
+          <!-- Career / Work -->
+          <div class="palette-item" draggable="true" data-type="career">
+            <div class="palette-icon career-bg">💼</div>
+            <div class="palette-info">
+              <span class="item-name">การงาน & ธุรกิจ</span>
+              <span class="item-desc">โปรเจกต์สำคัญ, ทักษะที่ต้องพัฒนา</span>
+            </div>
+            <button class="add-btn" title="เพิ่มลงบอร์ด">+</button>
+          </div>
+
+          <!-- Goals / Milestones -->
+          <div class="palette-item" draggable="true" data-type="goals">
+            <div class="palette-icon goals-bg">🎯</div>
+            <div class="palette-info">
+              <span class="item-name">เป้าหมายชีวิต (Goals)</span>
+              <span class="item-desc">ความฝันระยะสั้น/ยาว, ความสำเร็จ</span>
+            </div>
+            <button class="add-btn" title="เพิ่มลงบอร์ด">+</button>
+          </div>
+
+          <!-- Beliefs & Mindset -->
+          <div class="palette-item" draggable="true" data-type="beliefs">
+            <div class="palette-icon beliefs-bg">🧘</div>
+            <div class="palette-info">
+              <span class="item-name">ความเชื่อ & Mindset</span>
+              <span class="item-desc">คำคมสร้างพลังใจ, คุณค่าในใจ (Values)</span>
+            </div>
+            <button class="add-btn" title="เพิ่มลงบอร์ด">+</button>
+          </div>
+
+          <!-- Lifestyle / Daily Way -->
+          <div class="palette-item" draggable="true" data-type="lifestyle">
+            <div class="palette-icon lifestyle-bg">🌱</div>
+            <div class="palette-info">
+              <span class="item-name">วิถีชีวิต & สุขภาพ</span>
+              <span class="item-desc">กิจวัตร, การดูแลใจและร่างกาย, ความสุข</span>
+            </div>
+            <button class="add-btn" title="เพิ่มลงบอร์ด">+</button>
+          </div>
+
+          <!-- Mood Image / Note -->
+          <div class="palette-item" draggable="true" data-type="image-quote">
+            <div class="palette-icon image-bg">🖼️</div>
+            <div class="palette-info">
+              <span class="item-name">ภาพบันดาลใจ & โน้ต</span>
+              <span class="item-desc">ใส่รูปภาพ URL หรือข้อความอิสระ</span>
+            </div>
+            <button class="add-btn" title="เพิ่มลงบอร์ด">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Summary Overview -->
+      <div class="sidebar-summary">
+        <h3>สรุปภาพรวมบอร์ด</h3>
+        <div class="stat-row">
+          <span>การ์ดบนบอร์ด:</span>
+          <span id="statCardCount" class="stat-val">0 ชิ้น</span>
+        </div>
+        <div class="stat-row">
+          <span>เป้าหมายการเงินรวม:</span>
+          <span id="statFinanceTotal" class="stat-val">฿0</span>
+        </div>
+        <div class="stat-row">
+          <span>เช็คลิสต์ที่สำเร็จ:</span>
+          <span id="statTasksDone" class="stat-val">0 / 0</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button id="exportBoardBtn" class="secondary-btn">📥 บันทึกเป็นไฟล์ (JSON)</button>
+        <button id="importBoardBtn" class="secondary-btn">📤 นำเข้าไฟล์</button>
+        <input type="file" id="importFileInput" accept=".json" style="display:none;">
+      </div>
+    </aside>
+
+    <!-- Main Canvas Area -->
+    <main class="main-content">
+      <!-- Top Action Bar -->
+      <header class="topbar">
+        <div class="board-heading">
+          <input type="text" id="boardTitleInput" value="My Ultimate Life Vision Board 2026-2030" class="editable-title">
+          <span class="save-status" id="saveStatus">💾 บันทึกอัตโนมัติแล้ว</span>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="theme-selector-wrap">
+            <label for="themeSelect" class="theme-label">🎨 ธีมสี:</label>
+            <select id="themeSelect" class="theme-select">
+              <option value="midnight">🌌 Midnight Galaxy (ค่าเริ่มต้น)</option>
+              <option value="warm-sunset">🌅 Warm Sunset (ส้ม-ชมพู อบอุ่น)</option>
+              <option value="forest-zen">🍃 Forest Zen (เขียวธรรมชาติ ผ่อนคลาย)</option>
+              <option value="cyber-neon">⚡ Cyber Neon (ม่วง-ฟ้าสด ล้ำยุค)</option>
+              <option value="minimal-light">☀️ Minimal Clean (สว่าง คลีน มินิมอล)</option>
+              <option value="rose-gold">🌸 Rose Gold (ชมพูพีช ละมุน หรูหรา)</option>
+            </select>
+          </div>
+          <button id="addPresetDemoBtn" class="btn-preset">✨ โหลดตัวอย่าง</button>
+          <button id="clearBoardBtn" class="btn-danger">🗑️ ล้างบอร์ด</button>
+          <button id="printBoardBtn" class="btn-primary">🖨️ พิมพ์ / PDF</button>
+        </div>
+      </header>
+
+      <!-- Drag & Drop Board Canvas -->
+      <div class="board-canvas-wrapper" id="canvasWrapper">
+        <div class="board-canvas" id="boardCanvas">
+          <!-- Drop Zone Placeholder when empty -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🎨</div>
+            <h2>Vision Board ยังว่างเปล่า</h2>
+            <p>ลากกล่องเมนูจากแถบซ้าย หรือคลิกเครื่องหมาย <strong>+</strong> เพื่อเริ่มออกแบบแผนชีวิตในฝันของคุณ</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
